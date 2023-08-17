@@ -1,0 +1,44 @@
+$(document).ready(function () {
+  $('#myTable').bootstrapTable({
+    columns: [
+      // Other columns
+      {
+        field: 'dropdownField',
+        title: 'Dropdown Column',
+        formatter: dropdownFormatter,
+        validator: dropdownValidator
+      }
+    ],
+    data: yourData // Replace with your actual data
+  });
+});
+
+// Custom formatter for the dropdown column
+function dropdownFormatter(value, row, index, field) {
+  // Assuming yourData contains options for the dropdown
+  const options = yourData.dropdownOptions.map(option =>
+    `<option value="${option.value}">${option.label}</option>`
+  ).join('');
+
+  return `
+    <select class="form-control" name="${field}" required>
+      <option value="">Select an option</option>
+      ${options}
+    </select>`;
+}
+
+// Custom validator for the dropdown column
+function dropdownValidator(value, row) {
+  // Check if the value is not empty (i.e., an option is selected)
+  if (!value) {
+    return {
+      valid: false,
+      message: 'Please select an option'
+    };
+  }
+  
+  return {
+    valid: true,
+    message: ''
+  };
+}
