@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Complex BootstrapTable Example</title>
+  <title>BootstrapTable Disable Editable Field Programmatically Example</title>
   <!-- Include necessary CSS and JavaScript files -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
@@ -25,71 +25,38 @@
             title: 'Name'
           },
           {
-            field: 'age',
-            title: 'Age',
-            editable: true,
-            edittype: 'number' // Specify input type
-          },
-          {
-            field: 'city',
-            title: 'City',
-            editable: {
-              type: 'text', // Specify input type
-              disabled: true // Make the cell disabled
-            }
-          },
-          {
-            field: 'email',
-            title: 'Email',
-            formatter: emailFormatter, // Custom formatter
-            editable: {
-              type: 'email', // Specify input type
-              validate: function (value) {
-                // Custom validation logic
-                return /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value);
-              }
-            }
-          },
-          {
-            field: 'status',
-            title: 'Status',
-            editable: {
-              type: 'select', // Specify input type
-              source: [
-                { value: 'active', text: 'Active' },
-                { value: 'inactive', text: 'Inactive' }
-              ]
-            }
-          },
-          {
-            field: 'actions',
-            title: 'Actions',
-            formatter: actionsFormatter // Custom formatter for buttons
+            field: 'editableField',
+            title: 'Editable Field',
+            editable: true
           }
         ],
         data: [
-          { name: 'John', age: 25, city: 'New York', email: 'john@example.com', status: 'active' },
-          { name: 'Alice', age: 30, city: 'San Francisco', email: 'alice@example.com', status: 'inactive' },
-          { name: 'Bob', age: 22, city: 'Los Angeles', email: 'bob@example.com', status: 'active' }
+          { name: 'John', editableField: 'Edit Me' },
+          { name: 'Alice', editableField: 'Can Edit' },
+          { name: 'Bob', editableField: 'Click to Edit' }
         ],
         escape: true,
         editable: true
       });
     });
 
-    // Custom formatter for email field
-    function emailFormatter(value) {
-      return `<a href="mailto:${value}">${value}</a>`;
+    // Programmatically disable the editable field
+    function disableEditableField(rowIndex) {
+      const $table = $('#myTable');
+      const rowData = $table.bootstrapTable('getData')[rowIndex];
+      
+      // Update the cell with a new value and disable editing
+      rowData.editableField = 'Disabled';
+      $table.bootstrapTable('updateCell', { index: rowIndex, field: 'editableField', value: 'Disabled' });
+      
+      // Optionally, you can update the cell's CSS to visually indicate that it's disabled
+      const $cell = $table.find(`tr[data-index="${rowIndex}"] td[data-field="editableField"]`);
+      $cell.css('background-color', '#f0f0f0');
+      $cell.find('input').prop('disabled', true);
     }
 
-    // Custom formatter for actions field
-    function actionsFormatter(value, row) {
-      return `
-        <button class="btn btn-primary btn-sm edit-btn">Edit</button>
-        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-        <span class="badge bg-info">${row.status}</span>
-      `;
-    }
+    // Call the disableEditableField function for a specific row index
+    disableEditableField(1); // Disable the editable field for the second row
   </script>
 </body>
 </html>
