@@ -1,85 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>BootstrapTable Dynamic Editable Example</title>
-  <!-- Include necessary CSS and JavaScript files -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-</head>
-<body>
-  <div class="container">
-    <table id="myTable"></table>
-  </div>
-
-  <!-- Include necessary JavaScript files -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/editable/bootstrap-table-editable.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/editable/bootstrap-table-editable.min.js"></script>
   <script>
-    $(document).ready(function () {
-      $('#myTable').bootstrapTable({
+    $(document).ready(function() {
+      $('#table').bootstrapTable({
         columns: [
           {
-            field: 'name',
-            title: 'Name'
-          },
-          {
-            field: 'editableField',
-            title: 'Editable Field',
-            editable: false // Initial value
-          },
-          {
-            field: 'status',
-            title: 'Status',
-            editable: true,
-            formatter: statusFormatter, // Custom formatter for status column
-            events: {
-              'change .status-select': function (e, value, row, index) {
-                const selectedValue = e.target.value;
-                const $table = $('#myTable');
-
-                // Update the data with the new status value
-                $table.bootstrapTable('updateRow', {
-                  index: index,
-                  row: { status: selectedValue }
-                });
-
-                // Get the editable field column index
-                const columnIndex = $table.find('th[data-field="editableField"]').index();
-
-                // Determine if the editableField should be editable based on the status
-                const isEditable = selectedValue === 'enabled';
-
-                // Update the editable property of the column
-                $table.bootstrapTable('updateColumnOption', {
-                  field: 'editableField',
-                  editable: isEditable
-                });
+            field: 'dropdown',
+            title: 'Dropdown',
+            editable: {
+              type: 'select',
+              source: [
+                { value: 'option1', text: 'Option 1' },
+                { value: 'option2', text: 'Option 2' }
+              ],
+              display: function(value, row, index) {
+                return value === 'option1' ? 'Option 1' : 'Option 2';
               }
             }
+          },
+          {
+            field: 'col2',
+            title: 'Column 2',
+            editable: false
+          },
+          {
+            field: 'col3',
+            title: 'Column 3',
+            editable: false
           }
-        ],
-        data: [
-          { name: 'John', editableField: 'Value 1', status: 'enabled' },
-          { name: 'Alice', editableField: 'Value 2', status: 'enabled' },
-          { name: 'Bob', editableField: 'Value 3', status: 'disabled' }
-        ],
-        escape: true,
-        editable: true
+        ]
       });
     });
 
-    // Custom formatter for status column
-    function statusFormatter(value, row, index) {
-      const enabledSelected = row.status === 'enabled' ? 'selected' : '';
-      const disabledSelected = row.status === 'disabled' ? 'selected' : '';
+    $('#table').on('editable-save.bs.table', function(e, field, row, oldValue, $el) {
+      var selectedValue = row.dropdown;
 
-      return `<select class="status-select">
-                <option value="enabled" ${enabledSelected}>Enabled</option>
-                <option value="disabled" ${disabledSelected}>Disabled</option>
-              </select>`;
-    }
+      var col2Cell = $el.closest('tr').find('.col2');
+      var col3Cell = $el.closest('tr').find('.col3');
+
+      if (selectedValue === 'option1') {
+        col2Cell.show();
+        col3Cell.show();
+      } else if (selectedValue === 'option2') {
+        col2Cell.show();
+        col3Cell.hide();
+      }
+    });
   </script>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Bootstrap Table with Dropdown</h2>
+  <table id="table" data-toggle="table" data-editable="true">
+    <thead>
+      <tr>
+        <th data-field="dropdown">Dropdown</th>
+        <th data-field="col2" data-editable="false">Column 2</th>
+        <th data-field="col3" data-editable="false">Column 3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr></tr>
+    </tbody>
+  </table>
+</div>
+
 </body>
 </html>
