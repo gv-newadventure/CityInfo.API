@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/bootstrap-table.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.3/extensions/editable/bootstrap-table-editable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
   <script>
     $(document).ready(function() {
       $('#table').bootstrapTable({
@@ -28,30 +29,38 @@
           {
             field: 'col2',
             title: 'Column 2',
-            editable: false
+            editable: {
+              type: 'text',
+              placement: 'right'
+            }
           },
           {
             field: 'col3',
             title: 'Column 3',
-            editable: false
+            editable: {
+              type: 'text',
+              placement: 'right'
+            }
           }
         ]
       });
-    });
 
-    $('#table').on('editable-save.bs.table', function(e, field, row, oldValue, $el) {
-      var selectedValue = row.dropdown;
+      // Initialize editable
+      $('.editable').editable({
+        success: function(response, newValue) {
+          var selectedValue = $(this).closest('tr').find('.dropdown').val();
+          var col2Cell = $(this).closest('tr').find('.col2');
+          var col3Cell = $(this).closest('tr').find('.col3');
 
-      var col2Cell = $el.closest('tr').find('.col2');
-      var col3Cell = $el.closest('tr').find('.col3');
-
-      if (selectedValue === 'option1') {
-        col2Cell.show();
-        col3Cell.show();
-      } else if (selectedValue === 'option2') {
-        col2Cell.show();
-        col3Cell.hide();
-      }
+          if (selectedValue === 'option1') {
+            col2Cell.show();
+            col3Cell.show();
+          } else if (selectedValue === 'option2') {
+            col2Cell.show();
+            col3Cell.hide();
+          }
+        }
+      });
     });
   </script>
 </head>
@@ -59,16 +68,25 @@
 
 <div class="container mt-5">
   <h2>Bootstrap Table with Dropdown</h2>
-  <table id="table" data-toggle="table" data-editable="true">
+  <table id="table" data-toggle="table">
     <thead>
       <tr>
         <th data-field="dropdown">Dropdown</th>
-        <th data-field="col2" data-editable="false">Column 2</th>
-        <th data-field="col3" data-editable="false">Column 3</th>
+        <th data-field="col2">Column 2</th>
+        <th data-field="col3">Column 3</th>
       </tr>
     </thead>
     <tbody>
-      <tr></tr>
+      <tr>
+        <td><a href="#" class="dropdown editable" data-type="select" data-pk="1" data-name="dropdown" data-value="option1">Option 1</a></td>
+        <td><a href="#" class="col2 editable" data-type="text" data-pk="1" data-name="col2" data-value="">Data for Column 2</a></td>
+        <td><a href="#" class="col3 editable" data-type="text" data-pk="1" data-name="col3" data-value="">Data for Column 3</a></td>
+      </tr>
+      <tr>
+        <td><a href="#" class="dropdown editable" data-type="select" data-pk="2" data-name="dropdown" data-value="option2">Option 2</a></td>
+        <td><a href="#" class="col2 editable" data-type="text" data-pk="2" data-name="col2" data-value="">Data for Column 2</a></td>
+        <td><a href="#" class="col3 editable" data-type="text" data-pk="2" data-name="col3" data-value="">Data for Column 3</a></td>
+      </tr>
     </tbody>
   </table>
 </div>
