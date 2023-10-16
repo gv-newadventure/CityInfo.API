@@ -1,64 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Bootstrap Table Editable Select Example</title>
-  <!-- Include Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-  <div class="container mt-5">
-    <table id="table" data-toggle="table" data-pagination="true"></table>
-  </div>
+Cross training : Increase flexibility between the teams and help each other better understand how the business operates on all levels and improve technical knowledge of our product within out teams
 
-  <!-- Include Bootstrap, jQuery, and Bootstrap Table JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.js"></script>
-  <script>
-    $(function () {
-      // Create column definitions
-      var columns = [
-        { field: 'id', title: 'ID' },
-        { field: 'name', title: 'Name' },
-        {
-          field: 'gender',
-          title: 'Gender Selection',
-          editable: {
-            type: 'select',
-            source: { 'male': 'Male', 'female': 'Female' },
-            onblur: 'submit'
-          }
-        }
-      ];
+In pursuit of our goal to enhance cross-team flexibility and technical knowledge, I invested in training for Azure, DevOps, and SQL ReadyRoll migration. My commitment to continuous learning is an asset to our teams, fostering a better understanding of our product and improved business operations at all levels.
 
-      // Create table using Bootstrap Table
-      $('#table').bootstrapTable({
-        escape: true,
-        showFooter: false,
-        columns: columns,
-        data: [
-          { id: 1, name: 'John Doe', gender: 'male' },
-          // Add more data rows as needed
-        ]
-      });
 
-      // Handle cell editing event
-      $('#table').on('editable-save.bs.table', function (e, field, row, oldValue, $el) {
-        if (field === 'gender') {
-          var selectedValue = $el.val();
-          var index = $el.data('index');
-          var $table = $('#table');
-          $table.bootstrapTable('updateCell', {
-            index: index,
-            field: 'gender',
-            value: selectedValue
-          });
+Improve code quality : Improve and maintain modified code coverage to 98% and above. With 99% and above as stretch goal.
 
-          // Perform additional actions here based on the selected gender
-          console.log('Gender selected:', selectedValue);
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+Throughout this performance period, I have prioritized code quality by consistently working to enhance our modified code coverage. Our target of 98% was met, and I've strived to exceed it with a stretch goal of 99% and above. This commitment to testing and coverage improvement has not only bolstered software reliability but also made maintenance more efficient. I will continue to uphold these standards in the future.
+
+
+Risk Management : Understand risk as it relates to my role. Articulate and formulate plans to mitigate such risk in alignment with city national bank's policies and practices
+Identify root cause of breakdowns within processes and develops action plans to remediate
+Complete all required bank training within allotted time frame
+
+I've successfully grasped the concept of risk in my role, consistently aligning my approach with City National Bank's policies. In addition, I've been proactive in my commitment to completing all required bank training within designated time frames, strengthening our risk mitigation efforts
+
+Skill development : Complete fifteen hours of training through CNU, MS ESI or other training. Recommend to get familiar with some of the angular skills such as angular CLI, npm, typescript, Angular framework etc.
+
+I've demonstrated a strong commitment to skill enhancement by achieving the AZ-900 certification, in addition to completing fifteen hours of training through CNU, MS ESI, and other avenues. Notably, I've devoted time to building proficiency in Angular-related skills, including Angular CLI, npm, TypeScript, and the Angular framework. These endeavors empower me to make valuable contributions to our projects and stay current with evolving technologies.
