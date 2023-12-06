@@ -1,9 +1,23 @@
-I discussed the security concerns with Jack, specifically regarding the use of Firm pivot versus User pivot. Our initial decision to proceed with Firm pivot was influenced by the challenges we might face with the User pivot approach, including:
+// Example JSON string with unescaped ampersands and apostrophes
+const jsonString = '{"text": "This is an example & JSON\'s"}';
 
-Adding the logic to retrieve the API bearer token from IdentityServer during the Agillink login process.
-Dealing with the complexity of using a refresh token to renew the bearer token when it expires. It's important to note that refresh tokens also have limited validity and will eventually expire.
-We've chosen to move forward with the Firm pivot approach because the secret will be stored in the web application's config file. Additionally, the Agillink web-related endpoints will remain hidden and won't appear in the Swagger documentation, ensuring that third parties won't be aware of these endpoints.
+// Regular expression to find unescaped ampersands and apostrophes
+const regex = /([&'])/g;
 
-Given these considerations, Jack is comfortable proceeding with the Firm pivot approach for the time being. I believe that when we transition to the new UI/SPA-based application, the User pivot would be the more suitable approach to access the endpoints.
+// Replace unescaped ampersands and apostrophes with their respective escape sequences
+const escapedJSONString = jsonString.replace(regex, (match, p1) => {
+  if (p1 === '&') {
+    return '&amp;';
+  } else if (p1 === "'") {
+    return '\\u0027';
+  }
+  return match;
+});
 
-I hope this clarifies our decision. Please feel free to reach out with any questions or concerns you may have. Thank you for raising these important issues.
+// Parse the modified JSON string
+try {
+  const parsedJSON = JSON.parse(escapedJSONString);
+  console.log(parsedJSON);
+} catch (error) {
+  console.error('Error parsing JSON:', error);
+}
