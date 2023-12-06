@@ -1,23 +1,19 @@
-// Example JSON string with unescaped ampersands and apostrophes
-const jsonString = '{"text": "This is an example & JSON\'s"}';
+// Example JSON string with various escaped characters
+const jsonString = '{"text": "This is an example &amp; JSON\\u0027s \\u0026T"}';
 
-// Regular expression to find unescaped ampersands and apostrophes
-const regex = /([&'])/g;
+// Regular expression to find escaped ampersands, apostrophes, and \u0026T
+const regex = /&(amp|#38);|\\u0027|\\u0026T/g;
 
-// Replace unescaped ampersands and apostrophes with their respective escape sequences
-const escapedJSONString = jsonString.replace(regex, (match, p1) => {
-  if (p1 === '&') {
-    return '&amp;';
-  } else if (p1 === "'") {
-    return '\\u0027';
+// Replace escaped ampersands, apostrophes, and \u0026T with their original characters
+const unescapedJSONString = jsonString.replace(regex, (match) => {
+  if (match === '&amp;' || match === '&#38;') {
+    return '&';
+  } else if (match === '\\u0027') {
+    return "'";
+  } else if (match === '\\u0026T') {
+    return '&T';
   }
-  return match;
+  return match; // Return the original match if not replaced
 });
 
-// Parse the modified JSON string
-try {
-  const parsedJSON = JSON.parse(escapedJSONString);
-  console.log(parsedJSON);
-} catch (error) {
-  console.error('Error parsing JSON:', error);
-}
+console.log(unescapedJSONString);
