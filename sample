@@ -1,19 +1,6 @@
-// Example JSON string with various escaped characters
-const jsonString = '{"text": "This is an example &amp; JSON\\u0027s \\u0026T"}';
-
-// Regular expression to find escaped ampersands, apostrophes, and \u0026T
-const regex = /&(amp|#38);|\\u0027|\\u0026T/g;
-
-// Replace escaped ampersands, apostrophes, and \u0026T with their original characters
-const unescapedJSONString = jsonString.replace(regex, (match) => {
-  if (match === '&amp;' || match === '&#38;') {
-    return '&';
-  } else if (match === '\\u0027') {
-    return "'";
-  } else if (match === '\\u0026T') {
-    return '&T';
-  }
-  return match; // Return the original match if not replaced
-});
-
-console.log(unescapedJSONString);
+var $container = $('.error-message[data-for="' + element.attr("name") + '"]');
+                if (error.text() !== '') {
+                    $container.show().text(error.text()); // Show error message and set text
+                } else {
+                    $container.hide().empty(); // Hide error message and clear text if validation passes
+                }
