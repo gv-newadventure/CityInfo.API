@@ -1,5 +1,8 @@
- if (element.attr('data-element-type') === 'date') {
+      errorElement: 'div', // Define the element type for error messages
+            errorPlacement: function(error, element) {
+                if (element.attr('data-element-type') === 'date') {
                     error.insertAfter(element.closest('.input-group').find('.datepickericon').last()); // Insert error label after the nearest div with class 'input-group-addon datepickericon'
                 } else {
                     error.insertAfter(element); // Default placement for other elements
                 }
+            },
