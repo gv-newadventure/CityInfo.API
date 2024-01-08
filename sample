@@ -1,5 +1,39 @@
-  if (element.attr('data-element-type') === 'date') {
-                    error.appendTo(element.closest('.form-group')); // Place error message outside the div with class 'input-group date'
-                } else {
-                    error.insertAfter(element); // Default placement for other elements
-                }
+using System;
+using System.IO;
+using System.Text;
+
+namespace GenerateTestData
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int numberOfRecords = 500000;
+
+            StringBuilder xmlBuilder = new StringBuilder();
+
+            xmlBuilder.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xmlBuilder.AppendLine("<root>");
+
+            for (int i = 1; i <= numberOfRecords; i++)
+            {
+                xmlBuilder.AppendLine("    <abc:Entitlement>");
+                xmlBuilder.AppendLine("        <DepAccId>");
+                xmlBuilder.AppendLine($"            <AcctId>{i}/AcctId>");
+                xmlBuilder.AppendLine("            <AcctType>");
+                xmlBuilder.AppendLine("                DDA");
+                xmlBuilder.AppendLine("            </AcctType>");
+                xmlBuilder.AppendLine("        </DepAccId>");
+                xmlBuilder.AppendLine("    </abc:Entitlement>");
+            }
+
+            xmlBuilder.AppendLine("</root>");
+
+            // Writing the generated XML to a file
+            string filePath = "GeneratedTestData.xml";
+            File.WriteAllText(filePath, xmlBuilder.ToString());
+
+            Console.WriteLine($"Generated {numberOfRecords} XML records and saved to {filePath}");
+        }
+    }
+}
