@@ -1,65 +1,18 @@
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.IO;
+DECLARE @SiteCode VARCHAR(50)
+DECLARE siteCursor CURSOR FOR
+SELECT SiteCode FROM tbl_Sites
 
-class Program
-{
-    static void Main()
-    {
-        string excelFilePath = "C:\\Path\\To\\Your\\File.xlsx";
-        string tableName = "YourTable";
-        string connectionString = "Data Source=YourServer;Initial Catalog=YourDatabase;Integrated Security=True";
+OPEN siteCursor
+FETCH NEXT FROM siteCursor INTO @SiteCode
 
-        byte[] excelData = ReadExcelFile(excelFilePath);
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    -- Insert into tbl_user for each SiteCode
+    INSERT INTO tbl_user (Username, Password, SiteCode, OtherColumns)
+    VALUES ('defaultUsername', 'defaultPassword', @SiteCode, 'defaultValue')
 
-        if (excelData != null)
-        {
-            StoreInDatabase(excelData, tableName, connectionString);
-            Console.WriteLine("Excel data stored in the database successfully.");
-        }
-        else
-        {
-            Console.WriteLine("Error reading the Excel file.");
-        }
-    }
+    FETCH NEXT FROM siteCursor INTO @SiteCode
+END
 
-    static byte[] ReadExcelFile(string filePath)
-    {
-        try
-        {
-            // Read the Excel file into a byte array
-            byte[] fileData = File.ReadAllBytes(filePath);
-            return fileData;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error reading Excel file: {ex.Message}");
-            return null;
-        }
-    }
-
-    static void StoreInDatabase(byte[] excelData, string tableName, string connectionString)
-    {
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                // Assuming YourTable has an ID column and ExcelData VARBINARY(MAX) column
-                string insertQuery = $"INSERT INTO {tableName} (ExcelData) VALUES (@ExcelData)";
-
-                using (SqlCommand command = new SqlCommand(insertQuery, connection))
-                {
-                    command.Parameters.Add("@ExcelData", SqlDbType.VarBinary, -1).Value = excelData;
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error storing data in the database: {ex.Message}");
-        }
-    }
-}
+CLOSE siteCursor
+DEALLOCATE siteCursor
