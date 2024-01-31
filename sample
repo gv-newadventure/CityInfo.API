@@ -1,50 +1,31 @@
 using System;
-using System.Xml;
+using System.Reflection;
 
 class Program
 {
     static void Main()
     {
-        // Specify the XML file path
-        string xmlFilePath = "path/to/your/file.xml";
+        // Specify the path to your DLL
+        string dllPath = "path/to/your/Library.dll";
 
-        // Specify the XML nodes to be scrambled
-        string[] nodesToScramble = { "SensitiveElement1", "SensitiveElement2" };
+        // Load the DLL
+        Assembly assembly = Assembly.LoadFrom(dllPath);
 
-        // Load the XML document
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load(xmlFilePath);
+        // Get all types in the assembly
+        Type[] types = assembly.GetTypes();
 
-        // Scramble data for each specified node
-        foreach (var nodeName in nodesToScramble)
+        // Iterate through types and print methods
+        foreach (Type type in types)
         {
-            ScrambleNodeData(xmlDoc, nodeName);
+            Console.WriteLine($"Type: {type.FullName}");
+
+            // Get all methods for the type
+            MethodInfo[] methods = type.GetMethods();
+
+            foreach (MethodInfo method in methods)
+            {
+                Console.WriteLine($"  Method: {method.Name}");
+            }
         }
-
-        // Save the modified XML
-        xmlDoc.Save("scrambled_data.xml");
-
-        Console.WriteLine("XML data scrambled successfully.");
-    }
-
-    static void ScrambleNodeData(XmlDocument xmlDoc, string nodeName)
-    {
-        XmlNodeList nodes = xmlDoc.GetElementsByTagName(nodeName);
-
-        foreach (XmlNode node in nodes)
-        {
-            // Example scrambling algorithm: replace content with dummy value
-            string dummyValue = GenerateDummyValue();
-            node.InnerText = dummyValue;
-        }
-    }
-
-    static string GenerateDummyValue()
-    {
-        // Example: Generate a random string as a dummy value
-        Random random = new Random();
-        const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(characters, 8)
-          .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }
