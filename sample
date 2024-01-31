@@ -1,37 +1,32 @@
 using System;
-using System.Xml;
+using System.IO;
 
 class Program
 {
     static void Main()
     {
-        // Specify the paths to your XML files
-        string[] xmlFilePaths = { "path/to/file1.xml", "path/to/file2.xml", "path/to/file3.xml" };
+        // Specify the paths to your text files
+        string[] textFilePaths = { "path/to/file1.txt", "path/to/file2.txt", "path/to/file3.txt" };
 
-        // Create a new XmlDocument to hold the merged content
-        XmlDocument mergedDocument = new XmlDocument();
+        // Specify the path for the merged output file
+        string mergedOutputFilePath = "path/to/merged_output.txt";
 
-        // Create a root element for the merged document
-        XmlElement rootElement = mergedDocument.CreateElement("MergedRoot");
-        mergedDocument.AppendChild(rootElement);
+        // Merge the content of text files
+        MergeTextFiles(textFilePaths, mergedOutputFilePath);
 
-        // Loop through each XML file and merge its content
-        foreach (string xmlFilePath in xmlFilePaths)
+        Console.WriteLine("Text files merged successfully.");
+    }
+
+    static void MergeTextFiles(string[] sourceFilePaths, string targetFilePath)
+    {
+        using (StreamWriter writer = new StreamWriter(targetFilePath))
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(xmlFilePath);
-
-            // Copy the nodes from the source document to the target document
-            foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
+            foreach (string sourceFilePath in sourceFilePaths)
             {
-                XmlNode importedNode = mergedDocument.ImportNode(node, true);
-                rootElement.AppendChild(importedNode);
+                // Read the content of each source file and write it to the target file
+                string content = File.ReadAllText(sourceFilePath);
+                writer.Write(content);
             }
         }
-
-        // Save the merged document to a new file
-        mergedDocument.Save("merged_output.xml");
-
-        Console.WriteLine("XML files merged successfully.");
     }
 }
