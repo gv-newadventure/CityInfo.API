@@ -1,31 +1,37 @@
 using System;
-using System.Reflection;
+using System.Xml;
 
 class Program
 {
     static void Main()
     {
-        // Specify the path to your DLL
-        string dllPath = "path/to/your/Library.dll";
+        // Specify the paths to your XML files
+        string[] xmlFilePaths = { "path/to/file1.xml", "path/to/file2.xml", "path/to/file3.xml" };
 
-        // Load the DLL
-        Assembly assembly = Assembly.LoadFrom(dllPath);
+        // Create a new XmlDocument to hold the merged content
+        XmlDocument mergedDocument = new XmlDocument();
 
-        // Get all types in the assembly
-        Type[] types = assembly.GetTypes();
+        // Create a root element for the merged document
+        XmlElement rootElement = mergedDocument.CreateElement("MergedRoot");
+        mergedDocument.AppendChild(rootElement);
 
-        // Iterate through types and print methods
-        foreach (Type type in types)
+        // Loop through each XML file and merge its content
+        foreach (string xmlFilePath in xmlFilePaths)
         {
-            Console.WriteLine($"Type: {type.FullName}");
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(xmlFilePath);
 
-            // Get all methods for the type
-            MethodInfo[] methods = type.GetMethods();
-
-            foreach (MethodInfo method in methods)
+            // Copy the nodes from the source document to the target document
+            foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
             {
-                Console.WriteLine($"  Method: {method.Name}");
+                XmlNode importedNode = mergedDocument.ImportNode(node, true);
+                rootElement.AppendChild(importedNode);
             }
         }
+
+        // Save the merged document to a new file
+        mergedDocument.Save("merged_output.xml");
+
+        Console.WriteLine("XML files merged successfully.");
     }
 }
