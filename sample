@@ -1,9 +1,13 @@
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
+ getNavigationData(): Observable<Navigation> {
+    return this.http.get<FuseNavigationItem[]>(this.menuApiUrl)
+      .pipe(
+        map(menuItems => {
+          return {
+            compact: menuItems.filter(/* Add your filter condition for compact */),
+            default: menuItems.filter(/* Add your filter condition for default */),
+            futuristic: menuItems.filter(/* Add your filter condition for futuristic */),
+            horizontal: menuItems.filter(/* Add your filter condition for horizontal */)
+          };
+        })
+      );
+  }
