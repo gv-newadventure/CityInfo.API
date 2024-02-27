@@ -1,51 +1,37 @@
-Maintaining and enhancing corporate culture within a team and across the larger organization requires a proactive and continuous effort. Here are some key considerations:
+public List<MenuDto> GetMenus()
+{
+    using (var context = new YourDbContext())
+    {
+        var result = context.Menus
+            .Where(m => m.ParentMenuId == null) // Top-level menus
+            .Select(topMenu => new MenuDto
+            {
+                MenuId = topMenu.MenuId,
+                Title = topMenu.Title,
+                ChildMenus = context.Menus
+                    .Where(level2 => level2.ParentMenuId == topMenu.MenuId)
+                    .Select(level2Menu => new MenuDto
+                    {
+                        MenuId = level2Menu.MenuId,
+                        Title = level2Menu.Title,
+                        ChildMenus = context.Menus
+                            .Where(level3 => level3.ParentMenuId == level2Menu.MenuId)
+                            .Select(level3Menu => new MenuDto
+                            {
+                                MenuId = level3Menu.MenuId,
+                                Title = level3Menu.Title,
+                                ChildMenus = context.Menus
+                                    .Where(level4 => level4.ParentMenuId == level3Menu.MenuId)
+                                    .Select(level4Menu => new MenuDto
+                                    {
+                                        MenuId = level4Menu.MenuId,
+                                        Title = level4Menu.Title,
+                                        ChildMenus = new List<MenuDto>() // No more levels
+                                    }).ToList()
+                            }).ToList()
+                    }).ToList()
+            }).ToList();
 
-1. **Clear Mission, Vision, and Values:**
-   - Ensure that the organization's mission, vision, and values are clearly defined and communicated.
-   - Regularly revisit and reinforce these principles, making them an integral part of decision-making and daily operations.
-
-2. **Effective Communication:**
-   - Foster transparent and open communication channels at all levels of the organization.
-   - Encourage regular team meetings, town halls, and feedback sessions to keep everyone informed and engaged.
-
-3. **Leadership Commitment:**
-   - Leaders should embody the company's values and demonstrate a commitment to maintaining a positive culture.
-   - Set an example for others through their behavior, communication, and decision-making.
-
-4. **Employee Engagement:**
-   - Implement initiatives to enhance employee engagement, such as team-building activities, mentorship programs, and recognition programs.
-   - Solicit and act on feedback from employees, ensuring they feel heard and valued.
-
-5. **Flexibility and Work-Life Balance:**
-   - Support flexible work arrangements to promote a healthy work-life balance.
-   - Recognize the importance of employee well-being and encourage self-care.
-
-6. **Professional Development:**
-   - Provide opportunities for continuous learning and development.
-   - Support employees in their career growth, helping them acquire new skills and advance within the organization.
-
-7. **Inclusivity and Diversity:**
-   - Promote a culture of inclusivity and diversity within the organization.
-   - Foster an environment where all employees feel respected and valued for their unique contributions.
-
-8. **Recognition and Rewards:**
-   - Recognize and reward employees for their achievements and contributions.
-   - Establish a system that acknowledges both individual and team accomplishments.
-
-9. **Regular Team-Building Activities:**
-   - Organize regular team-building events and activities to strengthen relationships among team members.
-   - These activities can help create a positive and cohesive team culture.
-
-10. **Adaptability and Innovation:**
-    - Encourage a culture of adaptability and innovation to respond effectively to changes and challenges.
-    - Foster an environment where employees feel empowered to suggest and implement improvements.
-
-11. **Feedback Loops:**
-    - Establish feedback mechanisms for employees to share their thoughts on the corporate culture and suggest improvements.
-    - Use this feedback to make informed adjustments and enhancements.
-
-12. **Crisis Management:**
-    - Have a plan in place for managing crises that may impact the organization's culture.
-    - Communicate transparently during challenging times to maintain trust and transparency.
-
-Remember that maintaining and enhancing corporate culture is an ongoing process that requires the commitment of leadership and the active participation of every team member. Regularly assess the effectiveness of your initiatives and be willing to adapt strategies as the organization evolves.
+        return result;
+    }
+}
