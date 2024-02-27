@@ -1,37 +1,9 @@
-public List<MenuDto> GetMenus()
+builder.Services.AddCors(options =>
 {
-    using (var context = new YourDbContext())
+    options.AddDefaultPolicy(policy =>
     {
-        var result = context.Menus
-            .Where(m => m.ParentMenuId == null) // Top-level menus
-            .Select(topMenu => new MenuDto
-            {
-                MenuId = topMenu.MenuId,
-                Title = topMenu.Title,
-                ChildMenus = context.Menus
-                    .Where(level2 => level2.ParentMenuId == topMenu.MenuId)
-                    .Select(level2Menu => new MenuDto
-                    {
-                        MenuId = level2Menu.MenuId,
-                        Title = level2Menu.Title,
-                        ChildMenus = context.Menus
-                            .Where(level3 => level3.ParentMenuId == level2Menu.MenuId)
-                            .Select(level3Menu => new MenuDto
-                            {
-                                MenuId = level3Menu.MenuId,
-                                Title = level3Menu.Title,
-                                ChildMenus = context.Menus
-                                    .Where(level4 => level4.ParentMenuId == level3Menu.MenuId)
-                                    .Select(level4Menu => new MenuDto
-                                    {
-                                        MenuId = level4Menu.MenuId,
-                                        Title = level4Menu.Title,
-                                        ChildMenus = new List<MenuDto>() // No more levels
-                                    }).ToList()
-                            }).ToList()
-                    }).ToList()
-            }).ToList();
-
-        return result;
-    }
-}
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
