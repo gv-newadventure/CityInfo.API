@@ -1,17 +1,2 @@
-// src/app/product-search.interface.ts
-
-export interface ProductSearch {
-  productName?: string;
-  color?: string;
-  priceRange?: { min: number; max: number };
-  category?: string;
-}
-
-export interface Product {
-  productId: number;
-  productActivationDate: Date;
-  productName: string;
-  color: string;
-  price: number;
-  category: string;
-}
+min: this.searchParams.priceRange && this.searchParams.priceRange.min !== undefined ? this.searchParams.priceRange.min : 0,
+max: this.searchParams.priceRange && this.searchParams.priceRange.max !== undefined ? this.searchParams.priceRange.max : Number.MAX_SAFE_INTEGER,
