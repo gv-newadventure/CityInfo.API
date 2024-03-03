@@ -1,41 +1,142 @@
-<!-- product-search-input.component.html -->
+// src/app/product-search.interface.ts
 
-<div class="search-input-container">
-  <label for="productName">Product Name:</label>
-  <input type="text" id="productName" [(ngModel)]="searchParams.productName">
+export interface ProductSearch {
+  productName?: string;
+  color?: string;
+  priceRange?: { min: number; max: number };
+  category?: string;
+}
 
-  <label for="color">Color:</label>
-  <input type="text" id="color" [(ngModel)]="searchParams.color">
-
-  <label for="minPrice">Min Price:</label>
-  <input type="number" id="minPrice" [(ngModel)]="searchParams.priceRange?.min">
-
-  <label for="maxPrice">Max Price:</label>
-  <input type="number" id="maxPrice" [(ngModel)]="searchParams.priceRange?.max">
-
-  <label for="category">Category:</label>
-  <input type="text" id="category" [(ngModel)]="searchParams.category">
-
-  <button (click)="performSearch()">Search</button>
-</div>
+export interface Product {
+  productId: number;
+  productActivationDate: Date;
+  productName: string;
+  color: string;
+  price: number;
+  category: string;
+}
 
 
+// src/app/product-search.service.ts
+
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Product, ProductSearch } from './product-search.interface';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ProductSearchService {
+  private searchParamsSubject: BehaviorSubject<ProductSearch> = new BehaviorSubject<ProductSearch>({});
+  searchParams$: Observable<ProductSearch> = this.searchParamsSubject.asObservable();
+
+  private searchResultsSubject: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
+  searchResults$: Observable<Product[]> = this.searchResultsSubject.asObservable();
+
+  updateSearchParams(searchParams: ProductSearch) {
+    this.searchParamsSubject.next(searchParams);
+  }
+
+  updateSearchResults(searchResults: Product[]) {
+    this.searchResultsSubject.next(searchResults);
+  }
+}
+
+
+// src/app/product-search-input/product-search-input.component.ts
+
+import { Component } from '@angular/core';
+import { ProductSearchService } from '../product-search.service';
+import { ProductSearch } from '../product-search.interface';
+
+@Component({
+  selector: 'app-product-search-input',
+  templateUrl: './product-search-input.component.html',
+  styleUrls: ['./product-search-input.component.css'],
+})
+export class ProductSearchInputComponent {
+  searchParams: ProductSearch = {};
+
+  constructor(private productService: ProductSearchService) {}
+
+  performSearch() {
+    const dummySearchParams: ProductSearch = {
+      productName: this.searchParams.productName,
+      color: this.searchParams.color,
+      priceRange: {
+        min: this.searchParams.priceRange?.min || 0,
+        max: this.searchParams.priceRange?.max || Number.MAX_SAFE_INTEGER,
+      },
+      category: this.searchParams.category,
+    };
+
+    this.productService.updateSearchParams(dummySearchParams);
+  }
+}
 
 
 
-<!-- product-search-output.component.html -->
+// src/app/product-search-output/product-search-output.component.ts
 
-<div class="search-results-container">
-  <div class="product-grid">
-    <div *ngFor="let product of searchResults" class="product-item">
-      <div class="product-details">
-        <p><strong>Product ID:</strong> {{ product.productId }}</p>
-        <p><strong>Activation Date:</strong> {{ product.productActivationDate | date: 'short' }}</p>
-        <p><strong>Product Name:</strong> {{ product.productName }}</p>
-        <p><strong>Color:</strong> {{ product.color }}</p>
-        <p><strong>Price:</strong> ${{ product.price }}</p>
-        <p><strong>Category:</strong> {{ product.category }}</p>
-      </div>
-    </div>
-  </div>
-</div>
+import { Component, OnInit } from '@angular/core';
+import { ProductSearchService } from '../product-search.service';
+import { Product } from '../product-search.interface';
+
+@Component({
+  selector: 'app-product-search-output',
+  templateUrl: './product-search-output.component.html',
+  styleUrls: ['./product-search-output.component.css'],
+})
+export class ProductSearchOutputComponent implements OnInit {
+  searchResults: Product[] = [];
+
+  constructor(private productService: ProductSearchService) {}
+
+  ngOnInit() {
+    this.productService.searchResults$.subscribe((results) => {
+      this.searchResults = results;
+    });
+  }
+}
+
+
+// src/app/product-search-shell/product-search-shell.component.ts
+
+import { Component } from '@angular/core';
+import { ProductSearchService } from '../product-search.service';
+
+@Component({
+  selector: 'app-product-search-shell',
+  template: `
+    <app-product-search-input></app-product-search-input>
+    <app-product-search-output></app-product-search-output>
+  `,
+})
+export class ProductSearchShellComponent {
+  constructor(private productService: ProductSearchService) {}
+
+  updateSearchParams(searchParams: any) {
+    this.productService.updateSearchParams(searchParams);
+  }
+}
+
+
+
+
+// src/app/app.module.ts
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { ProductSearchInputComponent } from './product-search-input/product-search-input.component';
+import { ProductSearchOutputComponent } from './product-search-output/product-search-output.component';
+import { ProductSearchShellComponent } from './product-search-shell/product-search-shell.component';
+import { ProductSearchService } from './product-search.service';
+
+@NgModule({
+  imports: [BrowserModule, FormsModule],
+  declarations: [ProductSearchInputComponent, ProductSearchOutputComponent, ProductSearchShellComponent],
+  providers: [ProductSearchService],
+  bootstrap: [ProductSearchShellComponent],
+})
+export class AppModule {}
