@@ -1,5 +1,41 @@
-I hope this message finds you well. I recently worked on a new user story related to image creation for incoming wires. I have successfully incorporated the required changes and merged them into the master branch. The specific class affected is clsBOBNKCurrDay.
+<!-- product-search-input.component.html -->
 
-To ensure the seamless execution of these changes, I am seeking clarification on whether this code is executed within our Agillink web application or if it is managed by a Windows service. Understanding the execution environment is crucial for further testing and validation.
+<div class="search-input-container">
+  <label for="productName">Product Name:</label>
+  <input type="text" id="productName" [(ngModel)]="searchParams.productName">
 
-Your insights on this matter would be greatly appreciated. Thank you for your time and assistance.
+  <label for="color">Color:</label>
+  <input type="text" id="color" [(ngModel)]="searchParams.color">
+
+  <label for="minPrice">Min Price:</label>
+  <input type="number" id="minPrice" [(ngModel)]="searchParams.priceRange?.min">
+
+  <label for="maxPrice">Max Price:</label>
+  <input type="number" id="maxPrice" [(ngModel)]="searchParams.priceRange?.max">
+
+  <label for="category">Category:</label>
+  <input type="text" id="category" [(ngModel)]="searchParams.category">
+
+  <button (click)="performSearch()">Search</button>
+</div>
+
+
+
+
+
+<!-- product-search-output.component.html -->
+
+<div class="search-results-container">
+  <div class="product-grid">
+    <div *ngFor="let product of searchResults" class="product-item">
+      <div class="product-details">
+        <p><strong>Product ID:</strong> {{ product.productId }}</p>
+        <p><strong>Activation Date:</strong> {{ product.productActivationDate | date: 'short' }}</p>
+        <p><strong>Product Name:</strong> {{ product.productName }}</p>
+        <p><strong>Color:</strong> {{ product.color }}</p>
+        <p><strong>Price:</strong> ${{ product.price }}</p>
+        <p><strong>Category:</strong> {{ product.category }}</p>
+      </div>
+    </div>
+  </div>
+</div>
