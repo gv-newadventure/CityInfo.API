@@ -1,22 +1,3 @@
-// src/app/product-search.interface.ts
-
-export interface ProductSearch {
-  productName?: string;
-  color?: string;
-  priceRange?: { min: number; max: number };
-  category?: string;
-}
-
-export interface Product {
-  productId: number;
-  productActivationDate: Date;
-  productName: string;
-  color: string;
-  price: number;
-  category: string;
-}
-
-
 // src/app/product-search.service.ts
 
 import { Injectable } from '@angular/core';
@@ -35,108 +16,34 @@ export class ProductSearchService {
 
   updateSearchParams(searchParams: ProductSearch) {
     this.searchParamsSubject.next(searchParams);
+    this.performMockSearch(searchParams); // Perform search when parameters are updated
   }
 
-  updateSearchResults(searchResults: Product[]) {
-    this.searchResultsSubject.next(searchResults);
+  private performMockSearch(searchParams: ProductSearch) {
+    // Replace this with actual API call or data retrieval logic
+    const mockProducts: Product[] = this.generateMockProducts();
+    const filteredProducts = this.filterProducts(mockProducts, searchParams);
+    this.searchResultsSubject.next(filteredProducts);
   }
-}
 
-
-// src/app/product-search-input/product-search-input.component.ts
-
-import { Component } from '@angular/core';
-import { ProductSearchService } from '../product-search.service';
-import { ProductSearch } from '../product-search.interface';
-
-@Component({
-  selector: 'app-product-search-input',
-  templateUrl: './product-search-input.component.html',
-  styleUrls: ['./product-search-input.component.css'],
-})
-export class ProductSearchInputComponent {
-  searchParams: ProductSearch = {};
-
-  constructor(private productService: ProductSearchService) {}
-
-  performSearch() {
-    const dummySearchParams: ProductSearch = {
-      productName: this.searchParams.productName,
-      color: this.searchParams.color,
-      priceRange: {
-        min: this.searchParams.priceRange?.min || 0,
-        max: this.searchParams.priceRange?.max || Number.MAX_SAFE_INTEGER,
-      },
-      category: this.searchParams.category,
-    };
-
-    this.productService.updateSearchParams(dummySearchParams);
+  private generateMockProducts(): Product[] {
+    // Generate a list of mock products (replace this with actual data)
+    return [
+      { productId: 1, productActivationDate: new Date(), productName: 'Product A', color: 'Red', price: 50, category: 'Electronics' },
+      { productId: 2, productActivationDate: new Date(), productName: 'Product B', color: 'Blue', price: 70, category: 'Clothing' },
+      // Add more mock products as needed
+    ];
   }
-}
 
-
-
-// src/app/product-search-output/product-search-output.component.ts
-
-import { Component, OnInit } from '@angular/core';
-import { ProductSearchService } from '../product-search.service';
-import { Product } from '../product-search.interface';
-
-@Component({
-  selector: 'app-product-search-output',
-  templateUrl: './product-search-output.component.html',
-  styleUrls: ['./product-search-output.component.css'],
-})
-export class ProductSearchOutputComponent implements OnInit {
-  searchResults: Product[] = [];
-
-  constructor(private productService: ProductSearchService) {}
-
-  ngOnInit() {
-    this.productService.searchResults$.subscribe((results) => {
-      this.searchResults = results;
+  private filterProducts(products: Product[], searchParams: ProductSearch): Product[] {
+    // Implement your filtering logic based on search parameters
+    return products.filter(product => {
+      return (
+        (!searchParams.productName || product.productName.toLowerCase().includes(searchParams.productName.toLowerCase())) &&
+        (!searchParams.color || product.color.toLowerCase() === searchParams.color.toLowerCase()) &&
+        (!searchParams.priceRange || (product.price >= searchParams.priceRange.min && product.price <= searchParams.priceRange.max)) &&
+        (!searchParams.category || product.category.toLowerCase() === searchParams.category.toLowerCase())
+      );
     });
   }
 }
-
-
-// src/app/product-search-shell/product-search-shell.component.ts
-
-import { Component } from '@angular/core';
-import { ProductSearchService } from '../product-search.service';
-
-@Component({
-  selector: 'app-product-search-shell',
-  template: `
-    <app-product-search-input></app-product-search-input>
-    <app-product-search-output></app-product-search-output>
-  `,
-})
-export class ProductSearchShellComponent {
-  constructor(private productService: ProductSearchService) {}
-
-  updateSearchParams(searchParams: any) {
-    this.productService.updateSearchParams(searchParams);
-  }
-}
-
-
-
-
-// src/app/app.module.ts
-
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { ProductSearchInputComponent } from './product-search-input/product-search-input.component';
-import { ProductSearchOutputComponent } from './product-search-output/product-search-output.component';
-import { ProductSearchShellComponent } from './product-search-shell/product-search-shell.component';
-import { ProductSearchService } from './product-search.service';
-
-@NgModule({
-  imports: [BrowserModule, FormsModule],
-  declarations: [ProductSearchInputComponent, ProductSearchOutputComponent, ProductSearchShellComponent],
-  providers: [ProductSearchService],
-  bootstrap: [ProductSearchShellComponent],
-})
-export class AppModule {}
