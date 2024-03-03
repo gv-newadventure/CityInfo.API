@@ -1,49 +1,17 @@
-// src/app/product-search.service.ts
+// src/app/product-search.interface.ts
 
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Product, ProductSearch } from './product-search.interface';
+export interface ProductSearch {
+  productName?: string;
+  color?: string;
+  priceRange?: { min: number; max: number };
+  category?: string;
+}
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ProductSearchService {
-  private searchParamsSubject: BehaviorSubject<ProductSearch> = new BehaviorSubject<ProductSearch>({});
-  searchParams$: Observable<ProductSearch> = this.searchParamsSubject.asObservable();
-
-  private searchResultsSubject: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
-  searchResults$: Observable<Product[]> = this.searchResultsSubject.asObservable();
-
-  updateSearchParams(searchParams: ProductSearch) {
-    this.searchParamsSubject.next(searchParams);
-    this.performMockSearch(searchParams); // Perform search when parameters are updated
-  }
-
-  private performMockSearch(searchParams: ProductSearch) {
-    // Replace this with actual API call or data retrieval logic
-    const mockProducts: Product[] = this.generateMockProducts();
-    const filteredProducts = this.filterProducts(mockProducts, searchParams);
-    this.searchResultsSubject.next(filteredProducts);
-  }
-
-  private generateMockProducts(): Product[] {
-    // Generate a list of mock products (replace this with actual data)
-    return [
-      { productId: 1, productActivationDate: new Date(), productName: 'Product A', color: 'Red', price: 50, category: 'Electronics' },
-      { productId: 2, productActivationDate: new Date(), productName: 'Product B', color: 'Blue', price: 70, category: 'Clothing' },
-      // Add more mock products as needed
-    ];
-  }
-
-  private filterProducts(products: Product[], searchParams: ProductSearch): Product[] {
-    // Implement your filtering logic based on search parameters
-    return products.filter(product => {
-      return (
-        (!searchParams.productName || product.productName.toLowerCase().includes(searchParams.productName.toLowerCase())) &&
-        (!searchParams.color || product.color.toLowerCase() === searchParams.color.toLowerCase()) &&
-        (!searchParams.priceRange || (product.price >= searchParams.priceRange.min && product.price <= searchParams.priceRange.max)) &&
-        (!searchParams.category || product.category.toLowerCase() === searchParams.category.toLowerCase())
-      );
-    });
-  }
+export interface Product {
+  productId: number;
+  productActivationDate: Date;
+  productName: string;
+  color: string;
+  price: number;
+  category: string;
 }
