@@ -1,2 +1,29 @@
-min: this.searchParams.priceRange && this.searchParams.priceRange.min !== undefined ? this.searchParams.priceRange.min : 0,
-max: this.searchParams.priceRange && this.searchParams.priceRange.max !== undefined ? this.searchParams.priceRange.max : Number.MAX_SAFE_INTEGER,
+Subject: Assistance Needed for Investigation - Additional Information not Reflecting in Generated International Wire Images
+
+Hi Team,
+
+I hope this email finds you well. I've encountered an issue with User Story #xxxx, and I'm seeking your guidance to troubleshoot it effectively. Here's a detailed summary of the situation:
+
+Issue Overview:
+I implemented the required logic for US#xxxx and merged the changes into the master branch last week. However, after generating test images with Karthik, we observed that the newly generated image did not include the additional fields I added.
+
+Initial Investigation:
+
+Initially, I approached Karthik for assistance and attempted to debug the problem by executing an existing integration test method ("DDDD_YYY"). Surprisingly, the test method ran without any errors, and I was able to step into the specific logic I implemented for US#xxxx.
+Collaboration with Nikolay:
+
+Following Karthik's suggestion, I reached out to Nikolay, who provided valuable insights into the functionality related to US#xxxx. He recommended executing some existing integration test methods, which I did successfully.
+Deployment Check:
+
+To rule out deployment-related issues, I consulted Jack to verify the deployment date of the Windows service responsible for generating incoming wire images. Jack logged into the QA servers and confirmed that the latest DLLs were deployed.
+Current Dilemma:
+
+Despite the deployment confirmation, subsequent test images processed by Karthik still do not reflect the expected changes. This has led me to consider whether there might be an underlying deployment issue that I'm not identifying.
+Pull Request Information:
+
+For your reference, the pull request with the changes merged into master is available here: xxxx/files.test
+I'm reaching out to the team for assistance in determining whether there's a deployment issue or if I should be investigating a different aspect of the system. Your expertise and insights into this matter would be greatly appreciated.
+
+Thank you for your time and assistance.
+
+Best regards,
