@@ -1,9 +1,5 @@
-ubject: H1B Visa Interview Scheduled - Document Checklist Inquiry
-
-Dear Team,
-
-I hope this message finds you well. I wanted to inform you that my H1B visa interview is scheduled for April 16th and 17th. In preparation for the interview, I would appreciate it if you could provide any suggestions regarding a document checklist. Your guidance on this matter would be highly valuable.
-
-Thank you in advance for your assistance.
-
-Best regards,
+ <div *ngFor="let option of checkboxOptions; let i = index">
+    <mat-checkbox [formControl]="checkboxArray.controls[i]">
+      {{ option.label }}
+    </mat-checkbox>
+  </div>
