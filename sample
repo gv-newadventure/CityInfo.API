@@ -1,5 +1,3 @@
- <div formArrayName="options">
-    <div *ngFor="let option of checkboxForm.get('options').controls; let i = index">
-      <mat-checkbox [formControl]="option">{{ 'Option ' + (i + 1) }}</mat-checkbox>
-    </div>
-  </div>
+ get checkboxArray(): FormArray {
+    return this.checkboxForm.get('checkboxes') as FormArray;
+  }
