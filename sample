@@ -1,6 +1,6 @@
-<div>
-    <label>Options:</label>
-    <mat-radio-group formControlName="selectedOption">
-      <mat-radio-button *ngFor="let option of radioOptions" [value]="option">{{ option }}</mat-radio-button>
-    </mat-radio-group>
-  </div>
+get radioOptions(): { value: string; label: string }[] {
+    return Array.from({ length: this.numberOfOptions }, (_, i) => ({
+      value: `Option${i + 1}`,
+      label: `Option ${i + 1}`
+    }));
+  }
