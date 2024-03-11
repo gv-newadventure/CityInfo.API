@@ -1,28 +1,18 @@
-function hasQueryStringParameter(url, parameter) {
-    // Extract the query string from the URL
-    var queryString = url.split('?')[1];
+function replaceQueryStringValue(queryString, key, newValue) {
+    // Parse the query string into an object
+    var queryParams = {};
+    queryString.split("&").forEach(function (param) {
+        var pair = param.split("=");
+        queryParams[pair[0]] = decodeURIComponent(pair[1] || "");
+    });
 
-    if (queryString) {
-        // Parse the query string into an object
-        var queryParams = {};
-        queryString.split('&').forEach(function (param) {
-            var pair = param.split('=');
-            queryParams[pair[0]] = decodeURIComponent(pair[1] || '');
-        });
+    // Replace the value for the specified key
+    queryParams[key] = newValue;
 
-        // Check if the specified parameter exists
-        return queryParams.hasOwnProperty(parameter);
-    }
+    // Reconstruct the query string
+    var newQueryString = Object.keys(queryParams).map(function (key) {
+        return key + "=" + encodeURIComponent(queryParams[key]);
+    }).join("&");
 
-    return false; // No query string found
-}
-
-// Example usage
-var url = "http://example.com/page?param1=value1&param2=value2";
-var parameterToCheck = "param1";
-
-if (hasQueryStringParameter(url, parameterToCheck)) {
-    console.log("The URL contains the parameter:", parameterToCheck);
-} else {
-    console.log("The URL does not contain the parameter:", parameterToCheck);
+    return newQueryString;
 }
