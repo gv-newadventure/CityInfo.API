@@ -1,18 +1,4 @@
-function replaceQueryStringValue(queryString, key, newValue) {
-    // Parse the query string into an object
-    var queryParams = {};
-    queryString.split("&").forEach(function (param) {
-        var pair = param.split("=");
-        queryParams[pair[0]] = decodeURIComponent(pair[1] || "");
-    });
+ var hiddenFieldClientId = '<%= MainContent.FindControl("hiddenField1").ClientID %>';
 
-    // Replace the value for the specified key
-    queryParams[key] = newValue;
-
-    // Reconstruct the query string
-    var newQueryString = Object.keys(queryParams).map(function (key) {
-        return key + "=" + encodeURIComponent(queryParams[key]);
-    }).join("&");
-
-    return newQueryString;
-}
+    // Access the hidden field using the client-side ID
+    var hiddenField = document.getElementById(hiddenFieldClientId);
