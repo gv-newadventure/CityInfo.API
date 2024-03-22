@@ -1,4 +1,3 @@
- var hiddenFieldClientId = '<%= MainContent.FindControl("hiddenField1").ClientID %>';
+Implemented functionality to display the image selection section on the Deposits and Record Payment pages when accessed from the Bank Reconciliation page. These pages open as popups, and the image section is originally part of the DFXWeb.Master page, which isn't included in the popup master page.
 
-    // Access the hidden field using the client-side ID
-    var hiddenField = document.getElementById(hiddenFieldClientId);
+To enable the image selection feature in these popups, I temporarily utilized DFXWeb.Master during transaction creation and reverted to DFXpopup.master when opening saved transactions in the Bank Reconciliation page.
