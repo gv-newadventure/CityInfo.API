@@ -1,3 +1,17 @@
-Implemented functionality to display the image selection section on the Deposits and Record Payment pages when accessed from the Bank Reconciliation page. These pages open as popups, and the image section is originally part of the DFXWeb.Master page, which isn't included in the popup master page.
+public record PagedResponseOffset<T>
+{
+    public int PageNumber { get; init; }
+    public int PageSize { get; init; }
+    public int TotalRecords { get; init; }
+    public int TotalPages { get; init; }
+    public List<T> Data { get; init; }
 
-To enable the image selection feature in these popups, I temporarily utilized DFXWeb.Master during transaction creation and reverted to DFXpopup.master when opening saved transactions in the Bank Reconciliation page.
+    public PagedResponseOffset(List<T> data, int pageNumber, int pageSize, int totalRecords)
+    {
+        Data = data;
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+        TotalRecords = totalRecords;
+        TotalPages = (int)Math.Ceiling((decimal)totalRecords / (decimal)pageSize);
+    }
+}
