@@ -15,3 +15,71 @@ public record PagedResponseOffset<T>
         TotalPages = (int)Math.Ceiling((decimal)totalRecords / (decimal)pageSize);
     }
 }
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public static class LinqExtensions
+{
+    public static PagedResult<T> ToPagedResult<T>(this IQueryable<T> queryable, int pageNumber, int pageSize)
+    {
+        if (pageNumber < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than or equal to 1.");
+
+        if (pageSize < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than or equal to 1.");
+
+        var totalCount = queryable.Count();
+        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+        var records = queryable.Skip((pageNumber - 1) * pageSize)
+                               .Take(pageSize)
+                               .ToList();
+
+        return new PagedResult<T>(pageNumber, pageSize, totalCount, totalPages, records);
+    }
+}
+
+public record PagedResult<T>(int PageNumber, int PageSize, int TotalCount, int TotalPages, List<T> Records);
+
+
+
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[ApiController]
+[Route("[controller]")]
+public class ItemsController : ControllerBase
+{
+    private readonly List<Item> _items;
+
+    public ItemsController()
+    {
+        // Sample data
+        _items = Enumerable.Range(1, 100)
+                           .Select(i => new Item { Id = i, Name = $"Item {i}" })
+                           .ToList();
+    }
+
+    [HttpGet]
+    public ActionResult<PagedResult<Item>> GetItems(int pageNumber = 1, int pageSize = 10)
+    {
+        var queryableItems = _items.AsQueryable();
+
+        var pagedResult = queryableItems.ToPagedResult(pageNumber, pageSize);
+
+        return Ok(pagedResult);
+    }
+}
+
+public record Item
+{
+    public int Id { get; init; }
+    public string Name { get; init; }
+}
+
