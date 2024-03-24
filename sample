@@ -104,7 +104,7 @@ public record Item
    <path d="m16,25.96l6.04,0l-3.02,-3.2l-3.02,3.2z" fill="#10519D" id="svg_11"/>
    <path d="m7.72,21.75c-0.53,0.56 -0.53,1.44 0.02,1.99l2.22,2.22l6.04,-6.4l0,-6.4" fill="#2196F3" id="svg_12"/>
    <path d="m24.28,21.75c0.53,0.56 0.53,1.44 -0.02,1.99l-2.22,2.22l-6.04,-6.4l0,-6.4" fill="#1878C6" id="svg_13"/>
-   <text fill="#000000" font-family="Cursive" font-size="24" id="svg_14" stroke-width="0" text-anchor="middle" transform="matrix(0.642154 0 0 0.635921 0.110137 -2.22631)" x="96.13" xml:space="preserve" y="38.1">AgilLink</text>
+   <text fill="#ffffff" font-family="Cursive" font-size="24" id="svg_14" stroke-width="0" text-anchor="middle" transform="matrix(0.588523 0 0 0.645032 5.32286 -3.33587)" x="93.55" xml:space="preserve" y="38.4">Agillink</text>
   </g>
  </g>
 </svg>
