@@ -1,3 +1,5 @@
+.replace(/['"]/g, '\\$&');
+
 public record PagedResponseOffset<T>
 {
     public int PageNumber { get; init; }
