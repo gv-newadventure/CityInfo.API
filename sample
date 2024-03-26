@@ -1,112 +1,83 @@
-.replace(/['"]/g, '\\$&');
-
-public record PagedResponseOffset<T>
-{
-    public int PageNumber { get; init; }
-    public int PageSize { get; init; }
-    public int TotalRecords { get; init; }
-    public int TotalPages { get; init; }
-    public List<T> Data { get; init; }
-
-    public PagedResponseOffset(List<T> data, int pageNumber, int pageSize, int totalRecords)
-    {
-        Data = data;
-        PageNumber = pageNumber;
-        PageSize = pageSize;
-        TotalRecords = totalRecords;
-        TotalPages = (int)Math.Ceiling((decimal)totalRecords / (decimal)pageSize);
-    }
-}
-
-
-
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
-public static class LinqExtensions
+public class ErrorHandlingMiddleware
 {
-    public static PagedResult<T> ToPagedResult<T>(this IQueryable<T> queryable, int pageNumber, int pageSize)
+    private readonly RequestDelegate _next;
+
+    public ErrorHandlingMiddleware(RequestDelegate next)
     {
-        if (pageNumber < 1)
-            throw new ArgumentOutOfRangeException(nameof(pageNumber), "Page number must be greater than or equal to 1.");
+        _next = next;
+    }
 
-        if (pageSize < 1)
-            throw new ArgumentOutOfRangeException(nameof(pageSize), "Page size must be greater than or equal to 1.");
+    public async Task Invoke(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            Console.WriteLine($"An error occurred: {ex}");
 
-        var totalCount = queryable.Count();
-        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
-        var records = queryable.Skip((pageNumber - 1) * pageSize)
-                               .Take(pageSize)
-                               .ToList();
-
-        return new PagedResult<T>(pageNumber, pageSize, totalCount, totalPages, records);
+            // Return custom error response
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync("{\"error\": \"An unexpected error occurred.\"}");
+        }
     }
 }
 
-public record PagedResult<T>(int PageNumber, int PageSize, int TotalCount, int TotalPages, List<T> Records);
+public static class ErrorHandlingMiddlewareExtensions
+{
+    public static IApplicationBuilder UseErrorHandlingMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<ErrorHandlingMiddleware>();
+    }
+}
 
+
+public void Configure(IApplicationBuilder app)
+{
+    app.UseErrorHandlingMiddleware();
+
+    // Other middleware registrations...
+}
 
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
-[ApiController]
-[Route("[controller]")]
-public class ItemsController : ControllerBase
+public class GlobalExceptionFilterAttribute : ExceptionFilterAttribute
 {
-    private readonly List<Item> _items;
-
-    public ItemsController()
+    public override void OnException(ExceptionContext context)
     {
-        // Sample data
-        _items = Enumerable.Range(1, 100)
-                           .Select(i => new Item { Id = i, Name = $"Item {i}" })
-                           .ToList();
-    }
+        // Log the exception
+        Console.WriteLine($"An error occurred: {context.Exception}");
 
-    [HttpGet]
-    public ActionResult<PagedResult<Item>> GetItems(int pageNumber = 1, int pageSize = 10)
-    {
-        var queryableItems = _items.AsQueryable();
-
-        var pagedResult = queryableItems.ToPagedResult(pageNumber, pageSize);
-
-        return Ok(pagedResult);
+        // Return custom error response
+        context.Result = new ObjectResult(new { error = "An unexpected error occurred." })
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
     }
 }
 
-public record Item
+
+public void ConfigureServices(IServiceCollection services)
 {
-    public int Id { get; init; }
-    public string Name { get; init; }
+    services.AddControllers(options =>
+    {
+        options.Filters.Add<GlobalExceptionFilterAttribute>();
+    });
+
+    // Other service configurations...
 }
 
 
-<?xml version="1.0"?>
-<svg width="96.00000000000001" height="32" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
- <defs>
-  <clipPath id="clip0">
-   <rect fill="white" height="32" id="svg_1" width="96"/>
-  </clipPath>
- </defs>
- <g class="layer">
-  <title>Layer 1</title>
-  <g clip-path="url(#clip0)" id="svg_2">
-   <path d="m16,6.76l0,-6.76l-14.97,14.64c-0.57,0.55 -0.57,1.46 -0.01,2.02l2.54,2.54" fill="#2196F3" id="svg_4"/>
-   <path d="m16,6.76l0,-6.76l14.97,14.64c0.57,0.55 0.57,1.46 0.01,2.02l-2.54,2.54" fill="#1878C6" id="svg_5"/>
-   <path d="m3.56,19.2l6.04,-6.04l6.4,0l0,6.04" fill="#1565C0" id="svg_6"/>
-   <path d="m28.44,19.2l-6.04,-6.04l-6.4,0l0,6.04" fill="#10519D" id="svg_7"/>
-   <path d="m16,25.96l-6.04,0l3.02,-3.2l3.02,3.2z" fill="#1565C0" id="svg_8"/>
-   <path d="m16,32l6.04,-6.04l-6.04,0l0,6.04z" fill="#1878C6" id="svg_9"/>
-   <path d="m16,32l-6.04,-6.04l6.04,0l0,6.04z" fill="#2196F3" id="svg_10"/>
-   <path d="m16,25.96l6.04,0l-3.02,-3.2l-3.02,3.2z" fill="#10519D" id="svg_11"/>
-   <path d="m7.72,21.75c-0.53,0.56 -0.53,1.44 0.02,1.99l2.22,2.22l6.04,-6.4l0,-6.4" fill="#2196F3" id="svg_12"/>
-   <path d="m24.28,21.75c0.53,0.56 0.53,1.44 -0.02,1.99l-2.22,2.22l-6.04,-6.4l0,-6.4" fill="#1878C6" id="svg_13"/>
-   <text fill="#ffffff" font-family="Cursive" font-size="24" id="svg_14" stroke-width="0" text-anchor="middle" transform="matrix(0.588523 0 0 0.645032 5.32286 -3.33587)" x="93.55" xml:space="preserve" y="38.4">Agillink</text>
-  </g>
- </g>
-</svg>
+
+
