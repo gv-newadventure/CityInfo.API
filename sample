@@ -1,4 +1,1 @@
-function reverseEscapedQuotes(str) {
-    // Replace backslash followed by single or double quote with single or double quote
-    return str.replace(/\\(['"])/g, '$1');
-}
+"I addressed the broken hyperlink issue caused by single or double quotes in method parameters. Previously, we constructed HTML tables and hyperlinks using string concatenation, leading to functionality breakdown when dealing with values containing quotes, especially in Client name, Vendor ID, Payee, or Vendor name fields. To remedy this, I refactored the logic to utilize HTML data-attributes for passing data and attaching click handlers. Instead of constructing method calls via string concatenation, we now read data-attribute values and invoke JavaScript methods accordingly. This approach ensures robustness and flexibility, mitigating issues stemming from quote-containing values."
