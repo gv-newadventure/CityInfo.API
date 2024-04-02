@@ -1,1 +1,4 @@
-var linkHtml = '<a href="#" onclick="yourMethod(\'' + encodedParamValue + '\')">Click Here</a>';
+function reverseEscapedQuotes(str) {
+    // Replace backslash followed by single or double quote with single or double quote
+    return str.replace(/\\(['"])/g, '$1');
+}
