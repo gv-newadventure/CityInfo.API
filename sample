@@ -1,3 +1,31 @@
-Though our time working together has been relatively short, I must say that it has been an absolute pleasure collaborating with you. Your keen insights, dedication to our projects, and of course, your fantastic sense of humor have truly made our interactions memorable and enjoyable.
+// auth.interceptor.ts
 
-Wishing you all the best in your future endeavors. May your path be filled with exciting opportunities, personal growth, and continued success.
+import { Injectable } from '@angular/core';
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpResponse,
+  HttpErrorResponse,
+} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private router: Router) {}
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          // Unauthorized, navigate to login page or perform other actions
+          this.router.navigate(['/login']);
+        }
+        return throwError(error);
+      })
+    );
+  }
+}
