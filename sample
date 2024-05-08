@@ -1,17 +1,29 @@
-A saved search in a web application, especially on an advanced search page, refers to the ability for users to save specific search criteria or parameters for future use. Instead of re-entering the same search criteria each time they visit the page, users can simply load a saved search to quickly retrieve relevant results.
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Cookie>()
+        .HasKey(c => c.CookieId);
 
-Saved searches are particularly useful for users who frequently perform complex or customized searches. It saves them time and effort by allowing them to quickly access commonly used search configurations without having to re-enter all the details manually.
+    modelBuilder.Entity<Cookie>()
+        .Property(c => c.CookieId)
+        .IsRequired();
 
-Here are a few key points about saved searches:
+    modelBuilder.Entity<Cookie>()
+        .Property(c => c.Username)
+        .IsRequired()
+        .HasMaxLength(255);
 
-1. **Custom Search Criteria**: Users can define specific search criteria such as keywords, filters, date ranges, and more, and save them for future use.
+    modelBuilder.Entity<Cookie>()
+        .Property(c => c.FirmCode)
+        .IsRequired()
+        .HasMaxLength(50);
 
-2. **Convenience**: Saved searches offer convenience by eliminating the need to re-enter search parameters every time a user wants to perform a similar search.
+    modelBuilder.Entity<Cookie>()
+        .Property(c => c.CreateDate)
+        .IsRequired()
+        .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
 
-3. **Reusability**: Users can reuse saved searches multiple times, which is especially beneficial for tasks that require running similar searches regularly.
-
-4. **Personalization**: Saved searches are often associated with user accounts, allowing users to have personalized sets of saved searches tailored to their needs.
-
-5. **Management**: Users can typically manage their saved searches by editing, deleting, or renaming them as needed.
-
-In essence, saved searches enhance the user experience by streamlining the search process and providing a way to store and reuse complex search configurations.
+    modelBuilder.Entity<Cookie>()
+        .Property(c => c.ExpiryDate)
+        .IsRequired()
+        .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
+}
