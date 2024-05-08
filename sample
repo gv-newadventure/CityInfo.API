@@ -1,29 +1,23 @@
-protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Cookie>()
-        .HasKey(c => c.CookieId);
+ modelBuilder.Entity<Cookie>(entity =>
+    {
+        entity.HasKey(c => c.CookieId);
 
-    modelBuilder.Entity<Cookie>()
-        .Property(c => c.CookieId)
-        .IsRequired();
+        entity.Property(c => c.CookieId)
+            .IsRequired();
 
-    modelBuilder.Entity<Cookie>()
-        .Property(c => c.Username)
-        .IsRequired()
-        .HasMaxLength(255);
+        entity.Property(c => c.Username)
+            .IsRequired()
+            .HasMaxLength(255);
 
-    modelBuilder.Entity<Cookie>()
-        .Property(c => c.FirmCode)
-        .IsRequired()
-        .HasMaxLength(50);
+        entity.Property(c => c.FirmCode)
+            .IsRequired()
+            .HasMaxLength(50);
 
-    modelBuilder.Entity<Cookie>()
-        .Property(c => c.CreateDate)
-        .IsRequired()
-        .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
+        entity.Property(c => c.CreateDate)
+            .IsRequired()
+            .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
 
-    modelBuilder.Entity<Cookie>()
-        .Property(c => c.ExpiryDate)
-        .IsRequired()
-        .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
-}
+        entity.Property(c => c.ExpiryDate)
+            .IsRequired()
+            .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
+    });
