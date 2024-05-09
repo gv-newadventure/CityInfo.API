@@ -1,23 +1,8 @@
- modelBuilder.Entity<Cookie>(entity =>
-    {
-        entity.HasKey(c => c.CookieId);
+ssue Found:
+During our recent Penetration Test (Pen test), we discovered a vulnerability related to weak multi-factor authentication (MFA) in the Agillink login process when using the "remember me" feature.
 
-        entity.Property(c => c.CookieId)
-            .IsRequired();
+Current System:
+When users check the "remember me" box, a cookie named 'AgillinkIDPLastUser' is created. It contains user information (username | firmcode | boolean) separated by pipes ('|'). The boolean value determines whether to ask for an MFA token or bypass it. This setup exposes a vulnerability.
 
-        entity.Property(c => c.Username)
-            .IsRequired()
-            .HasMaxLength(255);
-
-        entity.Property(c => c.FirmCode)
-            .IsRequired()
-            .HasMaxLength(50);
-
-        entity.Property(c => c.CreateDate)
-            .IsRequired()
-            .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
-
-        entity.Property(c => c.ExpiryDate)
-            .IsRequired()
-            .HasColumnType("datetime2(2)"); // Set column type to datetime2(2)
-    });
+Proposed Solution:
+To fix this, we're introducing a new design. We'll create a new SQL table called MFARememberMeTokens, storing a unique GUID, username, firmcode, etc. Now, 'AgillinkIDPLastUser' will only store the unique GUID. By eliminating sensitive user data from the cookie, attackers will find it much harder to exploit this vulnerability.
