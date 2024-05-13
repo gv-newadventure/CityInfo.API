@@ -1,8 +1,1 @@
-ssue Found:
-During our recent Penetration Test (Pen test), we discovered a vulnerability related to weak multi-factor authentication (MFA) in the Agillink login process when using the "remember me" feature.
-
-Current System:
-When users check the "remember me" box, a cookie named 'AgillinkIDPLastUser' is created. It contains user information (username | firmcode | boolean) separated by pipes ('|'). The boolean value determines whether to ask for an MFA token or bypass it. This setup exposes a vulnerability.
-
-Proposed Solution:
-To fix this, we're introducing a new design. We'll create a new SQL table called MFARememberMeTokens, storing a unique GUID, username, firmcode, etc. Now, 'AgillinkIDPLastUser' will only store the unique GUID. By eliminating sensitive user data from the cookie, attackers will find it much harder to exploit this vulnerability.
+"The SQL WHERE clause includes conditions for VendorKey, Vendor, or Payee name. However, when the Vendor and Payee names match, the query inadvertently fetches details for both Vendor and Payee on the history page. To mitigate this issue, I am explicitly setting the Name parameter to null when the VendorKey is greater than 0. Conversely, when the VendorKey is equal to 0, the query is directed by the Name parameter."
