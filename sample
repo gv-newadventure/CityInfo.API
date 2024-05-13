@@ -1,1 +1,24 @@
-"The SQL WHERE clause includes conditions for VendorKey, Vendor, or Payee name. However, when the Vendor and Payee names match, the query inadvertently fetches details for both Vendor and Payee on the history page. To mitigate this issue, I am explicitly setting the Name parameter to null when the VendorKey is greater than 0. Conversely, when the VendorKey is equal to 0, the query is directed by the Name parameter."
+Asking for vacation time can be straightforward and professional. Here’s a template you might use:
+
+---
+
+Subject: Request for Vacation Leave Approval
+
+Dear [Manager’s Name],
+
+I hope this message finds you well. I am writing to formally request approval for a two-week vacation leave from [start date] to [end date]. 
+
+During my absence, I have made arrangements to ensure that my ongoing projects/tasks are covered. [Briefly mention any relevant plans or preparations you have made.]
+
+I believe that taking this time off will not only allow me to recharge and return with renewed energy and focus but also ensure continuity and efficiency in our team’s operations.
+
+Please let me know if there are any specific procedures or forms I need to complete as part of this request. I am more than happy to provide any additional information or assistance needed to facilitate a smooth transition during my absence.
+
+Thank you very much for considering my request. I look forward to your approval and guidance regarding the next steps.
+
+Best regards,
+[Your Name]
+
+---
+
+Feel free to customize it to suit your specific situation and company policies!
