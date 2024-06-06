@@ -1,24 +1,20 @@
-Asking for vacation time can be straightforward and professional. Here’s a template you might use:
-
----
-
-Subject: Request for Vacation Leave Approval
-
-Dear [Manager’s Name],
-
-I hope this message finds you well. I am writing to formally request approval for a two-week vacation leave from [start date] to [end date]. 
-
-During my absence, I have made arrangements to ensure that my ongoing projects/tasks are covered. [Briefly mention any relevant plans or preparations you have made.]
-
-I believe that taking this time off will not only allow me to recharge and return with renewed energy and focus but also ensure continuity and efficiency in our team’s operations.
-
-Please let me know if there are any specific procedures or forms I need to complete as part of this request. I am more than happy to provide any additional information or assistance needed to facilitate a smooth transition during my absence.
-
-Thank you very much for considering my request. I look forward to your approval and guidance regarding the next steps.
-
-Best regards,
-[Your Name]
-
----
-
-Feel free to customize it to suit your specific situation and company policies!
+SELECT 
+    fk.name AS ForeignKey,
+    tp.name AS ParentTable,
+    cp.name AS ParentColumn,
+    tf.name AS ForeignTable,
+    cf.name AS ForeignColumn
+FROM 
+    sys.foreign_keys AS fk
+INNER JOIN 
+    sys.foreign_key_columns AS fkc ON fk.object_id = fkc.constraint_object_id
+INNER JOIN 
+    sys.tables AS tp ON fkc.parent_object_id = tp.object_id
+INNER JOIN 
+    sys.columns AS cp ON fkc.parent_object_id = cp.object_id AND fkc.parent_column_id = cp.column_id
+INNER JOIN 
+    sys.tables AS tf ON fkc.referenced_object_id = tf.object_id
+INNER JOIN 
+    sys.columns AS cf ON fkc.referenced_object_id = cf.object_id AND fkc.referenced_column_id = cf.column_id
+ORDER BY 
+    tp.name, tf.name;
