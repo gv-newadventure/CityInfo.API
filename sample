@@ -1,16 +1,2 @@
-function callServerMethod(selectedValue) {
-    $.ajax({
-        type: "GET",
-        url: "Default.aspx/ServerMethod",
-        data: { value: selectedValue },
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            // Handle response from the server
-            alert(response.d);
-        },
-        error: function (response) {
-            alert("Failed to call server method.");
-        }
-    });
-}
+ JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+        MyServerVariableJson = jsSerializer.Serialize(myInvoice);
