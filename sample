@@ -1,2 +1,28 @@
- JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-        MyServerVariableJson = jsSerializer.Serialize(myInvoice);
+Here's a draft for your email to support regarding the issue you're experiencing:
+
+---
+
+Subject: Urgent: "Please create a master key in the database or open the master key in the session before performing this operation" Error
+
+Dear Support Team,
+
+I am encountering an issue when attempting to perform any operation related to vendor lookup or creating a new vendor. The error message I receive is as follows:
+
+"Please create a master key in the database or open the master key in the session before performing this operation."
+
+Upon troubleshooting, I have identified that the vendor-related SQL query utilizes the "DecryptByKey" function to decrypt the account number. Based on this, I suspect that the error might be related to the master key required for the decryption process.
+
+Could you please investigate this issue and provide guidance on how to resolve it? If there are any specific steps or configurations needed to ensure the master key is properly created or opened in the session, kindly provide detailed instructions.
+
+Thank you for your prompt assistance.
+
+Best regards,
+
+[Your Name]  
+[Your Position]  
+[Your Company]  
+[Contact Information]
+
+---
+
+Feel free to adjust any details as needed. This should provide the support team with a clear understanding of the issue and your suspected cause.
