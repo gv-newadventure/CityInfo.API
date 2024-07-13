@@ -1,3 +1,5 @@
-I wanted to take a moment to wish you all the best as you retire. Even though we haven't had the chance to work closely together, I've heard great things about your contributions to our team. Your expertise and dedication have clearly made a lasting impact.
-
-Wishing you health, happiness, and many new adventures in this next chapter of your life. Enjoy your well-deserved retirement!
+var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount / 2 };
+Parallel.ForEach(collection, parallelOptions, item => 
+{
+    // Your task code here
+});
