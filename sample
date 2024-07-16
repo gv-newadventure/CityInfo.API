@@ -1,5 +1,5 @@
-var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount / 2 };
-Parallel.ForEach(collection, parallelOptions, item => 
-{
-    // Your task code here
-});
+ optionsBuilder
+                .UseSqlServer("YourConnectionString") // Replace with your actual connection string
+                .EnableSensitiveDataLogging() // Optional: Enables logging of parameter values
+                .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+     
