@@ -1,5 +1,16 @@
-  var loggerFactory = LoggerFactory.Create(builder =>
-        {
-            builder.AddConsole();
-            // You can add other loggers here, such as Debug, EventSource, etc.
-        });
+public static readonly LoggerFactory MyConsoleLoggerFactory
+            = new LoggerFactory(new[] {
+              new ConsoleLoggerProvider((category, level)
+                => category == DbLoggerCategory.Database.Command.Name
+               && level == LogLevel.Information, true) });
+
+protected override void OnConfiguring
+  (DbContextOptionsBuilder optionsBuilder)
+{
+  var connectionString = 
+    ConfigurationManager.ConnectionStrings["WPFDatabase"].ToString();
+  optionsBuilder
+    .UseLoggerFactory(MyConsoleLoggerFactory)
+    .EnableSensitiveDataLogging(true)
+    .UseSqlServer(connectionString);
+}
