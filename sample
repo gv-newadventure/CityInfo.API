@@ -1,5 +1,5 @@
-public static readonly ILoggerFactory MyLoggerFactory
-        = LoggerFactory.Create(builder =>
+  var loggerFactory = LoggerFactory.Create(builder =>
         {
             builder.AddConsole();
+            // You can add other loggers here, such as Debug, EventSource, etc.
         });
