@@ -1,5 +1,23 @@
- optionsBuilder
-                .UseSqlServer("YourConnectionString") // Replace with your actual connection string
-                .EnableSensitiveDataLogging() // Optional: Enables logging of parameter values
-                .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
-     
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Data.Common;
+
+public class SqlInterceptor : DbCommandInterceptor
+{
+    public override void ReaderExecuting(DbCommand command, DbCommandInterceptionContext<DbDataReader> interceptionContext)
+    {
+        Console.WriteLine(command.CommandText);
+        base.ReaderExecuting(command, interceptionContext);
+    }
+
+    public override void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
+    {
+        Console.WriteLine(command.CommandText);
+        base.NonQueryExecuting(command, interceptionContext);
+    }
+
+    public override void ScalarExecuting(DbCommand command, DbCommandInterceptionContext<object> interceptionContext)
+    {
+        Console.WriteLine(command.CommandText);
+        base.ScalarExecuting(command, interceptionContext);
+    }
+}
