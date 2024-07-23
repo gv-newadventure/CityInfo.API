@@ -1,16 +1,7 @@
-public static readonly LoggerFactory MyConsoleLoggerFactory
-            = new LoggerFactory(new[] {
-              new ConsoleLoggerProvider((category, level)
-                => category == DbLoggerCategory.Database.Command.Name
-               && level == LogLevel.Information, true) });
-
-protected override void OnConfiguring
-  (DbContextOptionsBuilder optionsBuilder)
-{
-  var connectionString = 
-    ConfigurationManager.ConnectionStrings["WPFDatabase"].ToString();
-  optionsBuilder
-    .UseLoggerFactory(MyConsoleLoggerFactory)
-    .EnableSensitiveDataLogging(true)
-    .UseSqlServer(connectionString);
-}
+SELECT DISTINCT ar.*
+FROM tbl_RPT_Admin_Report ar
+JOIN tbl_Function_Roles fr ON ar.ReportKey = fr.FunctionID
+JOIN tbl_User_Roles ur ON fr.RoleID = ur.RoleID
+WHERE (ar.SiteCode IS NULL OR ar.SiteCode = @siteCode)
+AND ur.UserKey = @userKey
+AND ar.IsActive = 1;
