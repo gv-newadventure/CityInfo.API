@@ -1,7 +1,25 @@
-SELECT DISTINCT ar.*
-FROM tbl_RPT_Admin_Report ar
-JOIN tbl_Function_Roles fr ON ar.ReportKey = fr.FunctionID
-JOIN tbl_User_Roles ur ON fr.RoleID = ur.RoleID
-WHERE (ar.SiteCode IS NULL OR ar.SiteCode = @siteCode)
-AND ur.UserKey = @userKey
-AND ar.IsActive = 1;
+Subject: New Payroll Import Functionality Enhancements Available in QA
+
+Dear Team,
+
+I'm pleased to inform you that the new enhancements to the payroll import functionality have been implemented and the code has been merged into the master branch. The new functionality is now available in the QA environment for testing.
+
+Here is a high-level overview of the enhancements:
+
+1. **Ability to upload images** under the new category called "Payroll."
+2. **New "To Enter" Payroll inbox section** for easier organization.
+3. **Ability to associate images with existing payroll import functionality**, such as Paychex.
+4. **New Agillink payroll import functionality**.
+5. **Ability to add levels** in the upload file.
+6. **Ability to include 401k type records** in the payroll import file.
+7. **Validation of the Agillink import with firm settings** for "Payment" and "Journal."
+8. **Validation of the Agillink import functionality** with the new invoice flow.
+9. **Ability to modify employee names** during the payroll import draft stage.
+10. **Ability to delete payroll import data**, including preventing the deletion of invoices when they are in the "Paid" state.
+
+I've validated all the scenarios mentioned above in QA, and everything looks good so far. Please have the QA team start validating these enhancements as soon as possible.
+
+Thank you for your attention to this matter. Let me know if you have any questions or need further clarification.
+
+Best regards,
+Ganesh Kumar
