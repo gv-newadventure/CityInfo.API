@@ -1,72 +1,7 @@
-Opening:
-
-“Hi Jack, thank you for taking the time to meet with me today. I want to start by expressing my gratitude for the opportunities and support I’ve received here. Working with this team has been incredibly rewarding.”
-
-The Announcement:
-
-Hey Jack, I want to share an important update with you.
-
-“After much consideration, I have made the difficult decision to resign from my position. You see, This was not an easy choice, but it is based on some personal and family reasons that require me to move to Canada. I recently received a job offer in Canada, and I strongly hope that this move will benefit me and my family in the long run"
-
-Expressing Gratitude:
-
-“I want you to know how much I’ve valued my time here. The support, trust, and opportunities you’ve provided have been instrumental in my professional growth. I deeply appreciate everything the company has done for me.”
-
-Transition Offer:
-
-“I am committed to ensuring a smooth transition. I am happy to assist in any way possible during my notice period, whether it’s training someone new, wrapping up projects, or being available for any questions. I want to make sure that the team continues to succeed.”
-
-Closing:
-
-“Thank you again for everything. This was a very hard decision for me, and I hope we can stay in touch. I am truly grateful for my time here.”
-
-I also appreciate your consideration of potential future opportunities. While I cannot accept any immediate counter offers due to my commitment to my new role for at least the next six months, I am open to discussing the possibility of working as a contractor from Canada through a vendor after this initial period. I would be willing to explore this option if it aligns with my career goals and compensation expectations.
-
-
-
-Subject: Follow-Up on Our Conversation
-
-Hi Jack,
-
-I wanted to follow up on our conversation earlier today regarding my decision to resign from my position at City National Bank. This decision has been incredibly difficult for me, and I deeply appreciate your understanding and support during our discussion.
-
-As mentioned, my family and I need to move to Canada, where I have accepted a new role that allows me to utilize my permanent resident status and aligns with my personal and family commitments.
-
-I understand the challenges my departure may bring, and I want to help ensure a smooth transition. I am committed to assisting in any way possible during my notice period, whether it’s training a replacement, completing ongoing projects, or being available for any questions.
-
-I also appreciate your consideration of potential future opportunities. As discussed, while I cannot accept any immediate counter offers due to my commitment to my new role for at least the next six months, I am open to exploring the possibility of working as a contractor from Canada through a vendor after this initial period, provided the offer aligns with my career goals and compensation expectations.
-
-Below is my formal resignation letter, which outlines my intention to resign and my last working day, which will be [Last Working Day, two weeks from the day of the meeting]. I am truly grateful for the experiences and growth I have had at [Company Name], and I hope we can stay in touch and potentially collaborate in the future.
-
-Thank you again for your understanding and support.
-
-Best regards,
-
-[Your Full Name]
-[Your Job Title]
-[Your Contact Information]
-
-[Your Full Name]
-[Your Job Title]
-[Your Contact Information]
-[Date]
-
-[Manager’s Name]
-[Manager’s Title]
-[Company Name]
-
-Dear Jack,
-
-I am writing to formally resign from my position at [Company Name], effective [Last Working Day, two weeks from the day of the meeting].
-
-This decision has not been easy, but it is necessary for personal and family reasons. I have accepted a new role in Canada that allows me to utilize my permanent resident status and aligns with my personal and family commitments.
-
-I am committed to ensuring a smooth transition and am willing to assist in training a replacement, completing ongoing projects, and providing any other support needed during my notice period.
-
-I am grateful for the opportunities and experiences I have had at City National Bank, and I hope to stay in touch and potentially explore future opportunities for collaboration.
-
-Thank you for your understanding and support.
-
-Sincerely,
-
-Ganesh Kumar
+SELECT DISTINCT ar.*
+FROM tbl_RPT_Admin_Report ar
+JOIN tbl_Function_Roles fr ON ar.ReportKey = fr.FunctionID
+JOIN tbl_User_Roles ur ON fr.RoleID = ur.RoleID
+WHERE (ar.SiteCode IS NULL OR ar.SiteCode = @siteCode)
+AND ur.UserKey = @userKey
+AND ar.IsActive = 1;
