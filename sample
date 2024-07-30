@@ -1,7 +1,25 @@
-SELECT DISTINCT ar.*
-FROM tbl_RPT_Admin_Report ar
-JOIN tbl_Function_Roles fr ON ar.ReportKey = fr.FunctionID
-JOIN tbl_User_Roles ur ON fr.RoleID = ur.RoleID
-WHERE (ar.SiteCode IS NULL OR ar.SiteCode = @siteCode)
-AND ur.UserKey = @userKey
-AND ar.IsActive = 1;
+Here's a draft for your response:
+
+---
+
+**Subject: Re: Follow-Up on Our Conversation**
+
+**Hi [Manager’s Name],**
+
+Thank you so much for your kind words and understanding. It has been a privilege to work with such a supportive and talented team. I will truly miss everyone here, and I hope we can stay in touch and possibly work together again in the future.
+
+I wanted to let you know that I will be moving to Whitby, Ontario. I should be able to commute to Toronto, ON for work if required. I appreciate your efforts in exploring any potential opportunities through RBC or a future technology hub in Canada.
+
+Regarding communication with the team, I would prefer if you could send out a communication to the entire team. I think it would be the most efficient way to let everyone know, and I trust your judgment in how best to convey the news.
+
+Thank you again for everything. I am truly grateful for the experiences and support I've had here.
+
+Best regards,
+
+[Your Full Name]  
+[Your Job Title]  
+[Your Contact Information]
+
+---
+
+Feel free to adjust the wording to better suit your personal style and any additional information you might want to include.
